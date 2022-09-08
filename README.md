@@ -1,11 +1,12 @@
 0x16. C - Simple Shell
+
 Description
 The shell is a command-line interpreter or shell that provides a command line user interface for Unix-like operating systems. The shell is both an interactive command language and a scripting language, and is used by the operating system to control the execution of the system using shell scripts.
 
 Installation
 You can install the simple shell cloning this repo:
 
-$ git clone https://github.com/andreammgcol/simple_shell.git
+$ git clone https://github.com/ishimwe-chriss/simple-shell.git
 Next you can compile the files with this command:
 
 $ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
@@ -30,9 +31,9 @@ drwxrwxr-x 3 vagrant vagrant  4096 Nov 26 01:42 concepts
 -rw-rw-r-- 1 vagrant vagrant   606 Nov 26 01:42 tokenize.c
 -rw-rw-r-- 1 vagrant vagrant  1041 Nov 26 01:42 utilities.c
 ($)
-Holbertons-iMac-9:simple_shell holberton$ ./hsh 
+Main-iMac-9:simple_shell main$ ./hsh
 ($) pwd
-/Users/holberton/simple_shell
+/Users/main/simple_shell
 ($) cat signal_handler.c
 #include "shell.h"
 
