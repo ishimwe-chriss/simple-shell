@@ -1,141 +1,97 @@
 #include "shell.h"
-
 /**
-  * _strcat - Concatenates two strings
-  * @dest: The destination string
-  * @src: The source string
-  *
-  * Return: A pointer to the resulting string dest
-  */
-char *_strcat(char *dest, char *src)
+ * isfile_found - check if program executable file is
+ *	in $PATH
+ * @path: array of directories in variable $PATH
+ * @program: the executable file name to find in the path
+ *
+ * Return: String to the correct path, NULL if otherwise
+ */
+char *isfile_found(char **path, char *program)
 {
-	int dlen = 0, i = 0;
+	int i;
+	char *possible_path;
 
-	while (dest[dlen])
-		dlen++;
-
-	for (i = 0; src[i] != '\0'; i++)
+	for (i = 0; path[i]; i++)
 	{
-		dest[dlen] = src[i];
-		dlen++;
-	}
-
-	dest[dlen] = '\0';
-	return (dest);
-}
-
-/**
-  * _strlen - Counts the length of a string
-  * @s: The string to counts
-  *
-  * Return: The length of a string
-  */
-int _strlen(const char *s)
-{
-	int i = 0;
-
-	while (s[i])
-		i++;
-
-	return (i);
-}
-
-/**
-  * _strcmp - Compares two strings
-  * @s1: The first string
-  * @s2: The second string
-  *
-  * Return: int value
-  */
-int _strcmp(char *s1, char *s2)
-{
-	int len_s1 = 0, len_s2 = 0, pos = 0, diff = 0, lim = 0;
-
-	len_s1 = _strlen(s1);
-	len_s2 = _strlen(s2);
-
-	if (len_s1 <= len_s2)
-		lim = len_s1;
-	else
-		lim = len_s2;
-
-	while (pos <= lim)
-	{
-		if (s1[pos] == s2[pos])
+		possible_path = _strcat(path[i], "/");
+		possible_path = _strcat(possible_path, program);
+		if (access(possible_path, F_OK) == 0)
 		{
-			pos++;
-			continue;
+			return (possible_path);
 		}
 		else
 		{
-			diff = s1[pos] - s2[pos];
-			break;
+			free(possible_path);
+			possible_path = NULL;
 		}
-
-		pos++;
 	}
-
-	return (diff);
+	return (NULL);
 }
 
 /**
-  * _strdup - Duplicate a string
-  * @str: the string to duplicate
-  *
-  * Return: the string duplicated
-  */
-char *_strdup(char *str)
+ * _strcat - concatenate two strings
+ * @dest: the first file
+ * @app: the appendee
+ *
+ * Return: pointer to new string consisting of first two
+ */
+char *_strcat(char *dest, char *app)
 {
-	int idx = 0, len = 1;
-	char *dup_str;
+	int i, j;
+	char *new_str;
 
-	if (str == NULL)
-		return (NULL);
-
-	len = _strlen(str);
-	dup_str = malloc((sizeof(char) * len) + 1);
-	if (dup_str == NULL)
-		return (NULL);
-
-	while (idx < len)
+	new_str = malloc(sizeof(*dest) * _strlen(dest) + _strlen(app) + 1);
+	if (!new_str)
 	{
-		dup_str[idx] = str[idx];
-		idx++;
+		perror("malloc");
+		exit(EXIT_FAILURE);
 	}
+	for (i = 0; dest[i] != '\0'; i++)
+		new_str[i] = dest[i];
 
-	dup_str[idx] = '\0';
-	return (dup_str);
+
+	for (j = 0; app[j] != '\0'; j++, i++)
+		new_str[i] = app[j];
+	new_str[i] = '\0';
+	return (new_str);
 }
-
 /**
-  * _atoi - Convert a string to an integer.
-  * @s: The pointer to convert
-  *
-  * Return: A integer
-  */
-int _atoi(char *s)
+ * _strlen - find the length of a string
+ * @str: the string to search length for
+ *
+ * Return: length of the string
+ */
+int _strlen(char *str)
 {
-	int min = 1, isi = 0, pos = 0;
-	unsigned int ni = 0;
+	int i;
 
-	while (s[pos])
+	if (!str)
+		return (0);
+	for (i = 0; str[i] != '\0'; i++)
 	{
-		if (s[pos] == '-')
-			min *= -1;
-
-		while (s[pos] >= '0' && s[pos] <= '9')
-		{
-			isi = 1;
-			ni = (ni * 10) + (s[pos] - '0');
-			pos++;
-		}
-
-		if (isi == 1)
-			break;
-
-		pos++;
+		;
 	}
-
-	ni *= min;
-	return (ni);
+	return (i);
+}
+/**
+ * _putchar - write one character to stdout
+ * @c: the character to print
+ *
+ * Return: number of chars printed
+ */
+int _putchar(char c)
+{
+	return (write(STDOUT_FILENO, &c, 1));
+}
+/**
+ * break_on_error - break on error
+ * @message: error message
+ *
+ * Return: -1
+ */
+int break_on_error(char *message)
+{
+	perror(message);
+	return (-1);
 }
